@@ -23,10 +23,9 @@ namespace AzureConstructionsProgressTracker.Features.ProgressTracking
             // - create container
             // - upload blob
             // - return URL
-            throw new NotImplementedException();
 
             // Retrieve storage account from connection string.
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConfigurationManager.ConnectionStrings["StorageConnectionString"].ConnectionString);
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["StorageConnectionString"]);
 
             // Create the blob client.
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
@@ -40,7 +39,7 @@ namespace AzureConstructionsProgressTracker.Features.ProgressTracking
             // Retrieve reference to a blob named "myblob".
             CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileName);
 
-            blockBlob.UploadFromStream(file.InputStream);
+            await blockBlob.UploadFromStreamAsync(file.InputStream);
 
             return blockBlob.Uri.ToString();
         }
